@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pakkirappa's CGL Hub - History Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161A33;
+    --indigo:#1B1F3B;
+    --indigo-deep:#12152A;
+    --gold:#C9A227;
+    --gold-soft:#E6C866;
+    --maroon:#7A2E2E;
+    --parchment:#F7F1E3;
+    --parchment-dim:#EFE6CE;
+    --green:#2E7D4F;
+    --red:#B23A3A;
+    --purple:#6A4C93;
+    --grey:#9AA0B4;
+    --white:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(201,162,39,0.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(122,46,46,0.14), transparent 45%),
+      var(--indigo);
+    color:var(--parchment);
+    min-height:100vh;
+  }
+  .display{font-family:'Cinzel',serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- layout shells ---------- */
+  .app-header{
+    display:flex;align-items:center;gap:16px;
+    padding:18px 28px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.18), transparent);
+    border-bottom:1px solid rgba(201,162,39,0.35);
+  }
+  .logo-mark{
+    width:52px;height:52px;border-radius:10px;flex-shrink:0;
+    background:conic-gradient(from 210deg, var(--gold), var(--maroon), var(--gold-soft), var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 2px rgba(255,255,255,0.08), 0 6px 18px rgba(0,0,0,0.35);
+  }
+  .logo-mark svg{width:30px;height:30px;}
+  .brand-text .title{
+    font-size:22px;font-weight:700;letter-spacing:0.3px;color:var(--gold-soft);
+    line-height:1.15;
+  }
+  .brand-text .subtitle{
+    font-size:13px;color:var(--parchment);opacity:0.75;letter-spacing:2px;text-transform:uppercase;
+  }
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .admin-link{
+    font-size:12px;color:var(--parchment);opacity:0.55;cursor:pointer;
+    border:1px solid rgba(255,255,255,0.2);padding:6px 12px;border-radius:20px;
+    transition:.2s;
+  }
+  .admin-link:hover{opacity:1;border-color:var(--gold);}
+
+  .screen{display:none;max-width:960px;margin:0 auto;padding:36px 20px 60px;}
+  .screen.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--parchment);
+    color:var(--ink);
+    border-radius:14px;
+    padding:32px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    border:1px solid rgba(0,0,0,0.05);
+  }
+
+  /* ---------- registration ---------- */
+  .reg-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;}
+  .reg-wrap h1{font-size:28px;margin:0;color:var(--ink);}
+  .reg-wrap p{margin:0;color:#555;font-size:15px;max-width:480px;}
+  .field{width:100%;max-width:360px;text-align:left;margin-top:6px;}
+  .field label{font-size:13px;font-weight:600;color:var(--maroon);display:block;margin-bottom:6px;letter-spacing:0.4px;text-transform:uppercase;}
+  .field input{
+    width:100%;padding:13px 14px;border-radius:8px;border:1.5px solid #d8cba0;
+    font-size:16px;font-family:'Inter',sans-serif;background:#fffdf7;color:var(--ink);
+  }
+  .field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,0.2);}
+
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:15px;
+    padding:12px 26px;border-radius:8px;border:none;cursor:pointer;
+    transition:.2s; letter-spacing:0.2px;
+  }
+  .btn-primary{background:var(--maroon);color:#fff;}
+  .btn-primary:hover{background:#8f3838;}
+  .btn-primary:disabled{background:#c9b7b7;cursor:not-allowed;}
+  .btn-gold{background:var(--gold);color:#241a00;}
+  .btn-gold:hover{background:var(--gold-soft);}
+  .btn-outline{background:transparent;border:1.5px solid var(--maroon);color:var(--maroon);}
+  .btn-outline:hover{background:rgba(122,46,46,0.08);}
+  .btn-ghost{background:#eee3c4;color:var(--ink);}
+  .btn-ghost:hover{background:#e3d5a8;}
+
+  /* ---------- set selection ---------- */
+  .welcome-line{color:var(--gold-soft);font-size:15px;margin-bottom:4px;}
+  .set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:22px;}
+  .set-card{
+    background:#fffdf7;border:1.5px solid #e4d6a8;border-radius:12px;padding:22px;
+    text-align:left;cursor:pointer;transition:.2s;position:relative;overflow:hidden;
+  }
+  .set-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,0.12);}
+  .set-card .set-num{font-family:'Cinzel',serif;font-size:13px;color:var(--maroon);letter-spacing:2px;text-transform:uppercase;}
+  .set-card .set-title{font-size:20px;font-weight:700;margin:6px 0 4px;color:var(--ink);}
+  .set-card .set-meta{font-size:13px;color:#666;}
+  .set-card .set-status{position:absolute;top:14px;right:14px;font-size:11px;padding:3px 9px;border-radius:12px;background:var(--green);color:#fff;}
+
+  /* ---------- quiz screen ---------- */
+  .quiz-wrap{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start;}
+  @media (max-width:820px){.quiz-wrap{grid-template-columns:1fr;}}
+  .quiz-main{background:var(--parchment);border-radius:14px;padding:26px;box-shadow:0 20px 50px rgba(0,0,0,0.35);color:var(--ink);min-height:420px;display:flex;flex-direction:column;}
+  .q-top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .q-counter{font-weight:700;color:var(--maroon);font-size:15px;}
+  .q-tag{
+    font-size:12px;background:var(--indigo);color:var(--gold-soft);padding:4px 10px;border-radius:20px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .q-text{font-size:18px;line-height:1.5;font-weight:600;margin:6px 0 20px;color:var(--ink);}
+  .options{display:flex;flex-direction:column;gap:10px;flex:1;}
+  .option{
+    display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-radius:9px;
+    border:1.5px solid #e4d6a8;background:#fffdf7;cursor:pointer;transition:.15s;
+  }
+  .option:hover{border-color:var(--gold);}
+  .option.selected{border-color:var(--maroon);background:#f3e3c9;}
+  .option .opt-letter{
+    width:26px;height:26px;border-radius:50%;background:var(--indigo);color:var(--gold-soft);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
+  }
+  .option.selected .opt-letter{background:var(--maroon);color:#fff;}
+  .option .opt-text{font-size:15px;line-height:1.4;padding-top:3px;}
+
+  .q-nav-buttons{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .q-nav-buttons .left-group,.q-nav-buttons .right-group{display:flex;gap:10px;flex-wrap:wrap;}
+
+  .palette-panel{background:#22264a;border-radius:14px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,0.35);}
+  .palette-title{font-size:13px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold-soft);margin-bottom:12px;}
+  .legend{display:flex;flex-direction:column;gap:6px;font-size:12px;margin-bottom:16px;color:var(--parchment);opacity:0.85;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;}
+  .p-btn{
+    aspect-ratio:1;border-radius:6px;border:none;cursor:pointer;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center;color:#fff;background:var(--grey);
+    transition:.15s;
+  }
+  .p-btn.current{outline:2px solid var(--gold-soft);outline-offset:2px;}
+  .p-btn.not-answered{background:var(--red);}
+  .p-btn.answered{background:var(--green);}
+  .p-btn.marked{background:var(--purple);}
+  .p-btn.answered-marked{background:var(--purple);box-shadow:inset 0 0 0 3px var(--green);}
+
+  .submit-full{width:100%;margin-top:6px;}
+
+  /* ---------- review screen ---------- */
+  .score-banner{
+    background:linear-gradient(135deg, var(--gold) 0%, var(--gold-soft) 100%);
+    color:#241a00;border-radius:14px;padding:26px 30px;display:flex;justify-content:space-between;
+    align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:26px;
+  }
+  .score-banner .big-score{font-family:'Cinzel',serif;font-size:38px;font-weight:700;}
+  .score-banner .score-sub{font-size:13px;opacity:0.8;}
+  .review-item{background:var(--parchment);color:var(--ink);border-radius:12px;padding:22px 24px;margin-bottom:16px;}
+  .review-item .q-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .review-item .r-status{font-size:12px;padding:4px 10px;border-radius:20px;color:#fff;font-weight:600;}
+  .r-status.correct{background:var(--green);}
+  .r-status.incorrect{background:var(--red);}
+  .r-status.skipped{background:var(--grey);}
+  .review-opt{border-radius:8px;padding:11px 14px;margin-bottom:8px;border:1.5px solid #e4d6a8;background:#fffdf7;}
+  .review-opt.is-correct{border-color:var(--green);background:#e6f4ea;}
+  .review-opt.is-user-wrong{border-color:var(--red);background:#fbe9e9;}
+  .review-opt .ro-top{display:flex;gap:8px;font-weight:700;font-size:14px;margin-bottom:4px;}
+  .review-opt .ro-explain{font-size:13.5px;color:#444;line-height:1.45;}
+  .tagline{font-size:11px;color:#777;margin-top:4px;}
+
+  /* ---------- admin ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(10,12,26,0.75);display:flex;align-items:center;justify-content:center;
+    z-index:100;padding:20px;
+  }
+  .modal-box{background:var(--parchment);color:var(--ink);border-radius:14px;padding:30px;max-width:380px;width:100%;text-align:center;}
+  .modal-box h3{margin-top:0;}
+  table.admin-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px;}
+  table.admin-table th, table.admin-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #e0d3a8;}
+  table.admin-table th{background:var(--indigo);color:var(--gold-soft);font-size:12px;text-transform:uppercase;letter-spacing:0.6px;}
+  table.admin-table tr:hover{background:#f3ead0;}
+  .empty-note{color:#666;font-style:italic;padding:20px 0;text-align:center;}
+
+  .footer-note{text-align:center;color:rgba(247,241,227,0.4);font-size:12px;padding:20px;}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="logo-mark">
+    <!-- Placeholder logo (no logo file was supplied). Replace this svg or swap
+         for <img src="your-logo.png" style="width:100%;height:100%;object-fit:contain;">
+         to use your own artwork. -->
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2L14.5 8.5L21 9.5L16 14L17.5 21L12 17.5L6.5 21L8 14L3 9.5L9.5 8.5L12 2Z" fill="#1B1F3B" stroke="#1B1F3B"/>
+    </svg>
+  </div>
+  <div class="brand-text">
+    <div class="title display">Pakkirappa's CGL Hub</div>
+    <div class="subtitle">History Quiz &middot; Vedic Age</div>
+  </div>
+  <div class="header-right">
+    <span class="admin-link" onclick="openAdminLogin()">Admin</span>
+  </div>
+</div>
+
+<!-- ============ SCREEN 1: REGISTRATION ============ -->
+<div class="screen active" id="screen-register">
+  <div class="card reg-wrap">
+    <h1 class="display">Welcome, Aspirant</h1>
+    <p>Enter your name to begin the Vedic Age history quiz. Your attempts and scores will be recorded so you can track your progress.</p>
+    <div class="field">
+      <label for="studentName">Your Name</label>
+      <input type="text" id="studentName" placeholder="e.g. Ramesh Kumar" oninput="checkNameInput()">
+    </div>
+    <button class="btn btn-primary" id="startBtn" disabled onclick="goToSetSelection()">Continue &rarr;</button>
+  </div>
+</div>
+
+<!-- ============ SCREEN 2: SET SELECTION ============ -->
+<div class="screen" id="screen-sets">
+  <div class="card">
+    <div class="welcome-line">Welcome back, <strong id="welcomeName"></strong> &mdash; choose a set to attempt</div>
+    <h1 class="display" style="margin:4px 0 6px;">Vedic Age &middot; Question Sets</h1>
+    <p style="color:#555;margin:0;">58 questions sourced from real SSC CGL / CHSL / MTS / CPO / Selection Post / Delhi Police papers, split into 4 manageable sets.</p>
+    <div class="set-grid" id="setGrid"></div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 3: QUIZ ============ -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-main">
+      <div class="q-top-bar">
+        <div class="q-counter" id="qCounter">Question 1 of 15</div>
+        <div class="q-tag" id="qTag"></div>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="q-nav-buttons">
+        <div class="left-group">
+          <button class="btn btn-ghost" onclick="prevQuestion()">&larr; Previous</button>
+          <button class="btn btn-outline" onclick="clearResponse()">Clear Response</button>
+        </div>
+        <div class="right-group">
+          <button class="btn btn-gold" onclick="markForReview()">Mark for Review &amp; Next</button>
+          <button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+    <div class="palette-panel">
+      <div class="palette-title">Question Palette</div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--grey)"></span> Not visited</span>
+        <span><span class="dot" style="background:var(--red)"></span> Not answered</span>
+        <span><span class="dot" style="background:var(--green)"></span> Answered</span>
+        <span><span class="dot" style="background:var(--purple)"></span> Marked for review</span>
+      </div>
+      <div class="palette-grid" id="paletteGrid"></div>
+      <button class="btn btn-primary submit-full" onclick="confirmSubmit()">Submit Quiz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 4: REVIEW ============ -->
+<div class="screen" id="screen-review">
+  <div class="score-banner">
+    <div>
+      <div class="score-sub" id="reviewStudentLine"></div>
+      <div class="big-score display" id="scoreBig"></div>
+    </div>
+    <div style="text-align:right;">
+      <button class="btn btn-outline" style="background:rgba(255,255,255,0.4);" onclick="goToSetSelection()">Try Another Set</button>
+    </div>
+  </div>
+  <div id="reviewList"></div>
+</div>
+
+<div class="footer-note">Pakkirappa's CGL Hub &middot; Built for SSC CGL / CHSL / MTS aspirants</div>
+
+<!-- ============ ADMIN LOGIN MODAL ============ -->
+<div class="modal-overlay" id="adminLoginModal" style="display:none;">
+  <div class="modal-box">
+    <h3 class="display">Admin Access</h3>
+    <p style="color:#555;font-size:14px;">Enter the owner password to view student attempt records.</p>
+    <div class="field" style="max-width:none;">
+      <input type="password" id="adminPassInput" placeholder="Password" onkeydown="if(event.key==='Enter')checkAdminPassword()">
+    </div>
+    <p id="adminErrMsg" style="color:var(--red);font-size:13px;display:none;">Incorrect password. Try again.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:14px;">
+      <button class="btn btn-ghost" onclick="closeAdminLogin()">Cancel</button>
+      <button class="btn btn-primary" onclick="checkAdminPassword()">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ADMIN DASHBOARD SCREEN ============ -->
+<div class="screen" id="screen-admin">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <h1 class="display" style="margin:0;">Admin Dashboard</h1>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline" onclick="clearAllAttempts()">Clear All Records</button>
+        <button class="btn btn-ghost" onclick="exitAdmin()">Exit Admin</button>
+      </div>
+    </div>
+    <p style="color:#555;">All quiz attempts recorded on this device/browser.</p>
+    <div id="adminTableWrap"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   DATA: 58 Vedic Age questions extracted from the two source
+   files (Pinnacle History PDF + Borderland SSC Warbook PDF).
+   ========================================================= */
+const QUESTIONS = [
+{q:"Consider the following statements in the context of the Vedas.\n1. The Vedas are called Shruti.\n2. The Rigveda consists of ten Mandalas.\nWhich of the statements given above is/are correct?",tag:"SSC MTS 22/10/2024, 2nd Shift",options:{a:"Neither 1 nor 2",b:"Only 2",c:"Both 1 and 2",d:"Only 1"},correct:"c",exp:{a:"Incorrect - both statements are in fact true, so \"neither\" is wrong.",b:"Incorrect - statement 1 is also true (Vedas are Shruti, \"that which is heard\"), not just statement 2.",c:"Correct - Vedas are classified as Shruti literature, and the Rigveda is indeed organised into ten Mandalas.",d:"Incorrect - statement 2 about ten Mandalas is also correct, so it isn't \"only 1\"."}},
+{q:"Which Rigvedic God is considered an intermediary between God and men?",tag:"SSC MTS 04/11/2024, 2nd Shift",options:{a:"Indra",b:"Agni",c:"Varuna",d:"Yama"},correct:"b",exp:{a:"Incorrect - Indra is the warrior/rain god, not the sacrificial intermediary.",b:"Correct - Agni, the fire god, carries offerings from men to the gods, acting as an intermediary.",c:"Incorrect - Varuna is associated with cosmic/moral order (Rta), not this role.",d:"Incorrect - Yama is the god of death, unrelated to this role."}},
+{q:"According to the Ashrama system of Vedic life, which of the following was the third stage of life?",tag:"SSC CGL 11/09/2024, 2nd Shift",options:{a:"Grihastha",b:"Sanyasa",c:"Brahmacharya",d:"Vanaprastha"},correct:"d",exp:{a:"Incorrect - Grihastha (householder life) is the second stage.",b:"Incorrect - Sanyasa (renunciation) is the fourth and final stage.",c:"Incorrect - Brahmacharya (student life) is the first stage.",d:"Correct - Vanaprastha, the retired/advisory stage, is the third of the four ashramas."}},
+{q:"The Vedangas are Hindu auxiliary disciplines linked to the study of the Vedas. These are _____ in number.",tag:"SSC CGL 12/09/2024, 2nd Shift",options:{a:"five",b:"seven",c:"four",d:"six"},correct:"d",exp:{a:"Incorrect - there are more than five.",b:"Incorrect - seven overstates the count.",c:"Incorrect - four undercounts the disciplines.",d:"Correct - there are exactly six Vedangas: Shiksha, Kalpa, Vyakarana, Nirukta, Chandas, and Jyotisha."}},
+{q:"According to the Varna system prevalent in the Vedic period, which of the following was NOT a Varna?",tag:"SSC CGL 18/09/2024, 1st Shift",options:{a:"Brahmanas",b:"Kshatriyas",c:"Samiti",d:"Vaishyas"},correct:"c",exp:{a:"Incorrect - Brahmanas (priests/teachers) are one of the four varnas.",b:"Incorrect - Kshatriyas (warriors/rulers) are a varna.",c:"Correct - Samiti was a Vedic tribal assembly, not a varna.",d:"Incorrect - Vaishyas (merchants/cultivators) are a varna."}},
+{q:"Which among the following was NOT a part of the three sections of the Rigvedic tribe?",tag:"SSC CGL 23/09/2024, 1st Shift",options:{a:"Craftsman",b:"Priests",c:"Ordinary people",d:"Warriors"},correct:"a",exp:{a:"Correct - craftsmen were part of the \"ordinary people\" category, not a separate section of their own.",b:"Incorrect - priests were one of the three sections.",c:"Incorrect - ordinary people (farmers, traders, artisans) formed one section.",d:"Incorrect - warriors were one of the three sections."}},
+{q:"A large number of words are derived from the word 'Go' meaning cow. A wealthy person was known as _____ in Vedic times.",tag:"SSC CGL 24/09/2024, 3rd Shift",options:{a:"Gomat",b:"Gotra",c:"Gabaksha",d:"Gaveshana"},correct:"a",exp:{a:"Correct - \"Gomat\", from gomati (possessing cows), described a wealthy person.",b:"Incorrect - Gotra refers to lineage/descent from a common ancestor, not wealth.",c:"Incorrect - Gabaksha is not the term used for wealth here.",d:"Incorrect - Gaveshana means \"search for cows\" (or battle), not a description of wealth."}},
+{q:"How many Mandalas were in the Rig Vedic Samhita?",tag:"SSC CPO 27/06/2024, 2nd Shift",options:{a:"11",b:"10",c:"12",d:"20"},correct:"b",exp:{a:"Incorrect - there are not 11 Mandalas.",b:"Correct - the Rigveda is organised into 10 Mandalas.",c:"Incorrect - 12 overstates the number.",d:"Incorrect - 20 is far too high."}},
+{q:"Which of the following is the earliest literary record of Indian culture?",tag:"Graduate Level 20/06/2024, Shift-3",options:{a:"Yajurveda",b:"Rigveda",c:"Atharvaveda",d:"Samaveda"},correct:"b",exp:{a:"Incorrect - the Yajurveda came after the Rigveda.",b:"Correct - the Rigveda is the oldest of the four Vedas and the earliest literary record.",c:"Incorrect - Atharvaveda is the last of the four Vedas.",d:"Incorrect - Samaveda largely borrows verses from the Rigveda, so it is later."}},
+{q:"Asikni, which was a part of Sapta-Sindhu, is the name of which of the following rivers in present times?",tag:"SSC Stenographer 12/10/2023, Afternoon",options:{a:"Jhelum",b:"Beas",c:"Chenab",d:"Ravi"},correct:"c",exp:{a:"Incorrect - Jhelum's ancient name was Vitasta.",b:"Incorrect - Beas's ancient name was Vipasha.",c:"Correct - Asikni is the ancient name of the river Chenab.",d:"Incorrect - Ravi's ancient name was Parushni/Iravati."}},
+{q:"Which of the following Vedas is found in two recensions, black and white, and is full of rituals to be performed publicly or individually?",tag:"SSC Stenographer 13/10/2023, Afternoon",options:{a:"Rigveda",b:"Atharvaveda",c:"Yajurveda",d:"Samaveda"},correct:"c",exp:{a:"Incorrect - Rigveda has no black/white recension split.",b:"Incorrect - Atharvaveda deals with spells, not this ritual division.",c:"Correct - Yajurveda is divided into Krishna (black) and Shukla (white) recensions.",d:"Incorrect - Samaveda is focused on musical chants, not this division."}},
+{q:"In which of the following Vedas was the Dasarajna war (the war of ten kings) mentioned?",tag:"SSC CGL 21/07/2023, 4th Shift",options:{a:"Yajurveda",b:"Samaveda",c:"Rigveda",d:"Atharvaveda"},correct:"c",exp:{a:"Incorrect - the Yajurveda doesn't record this historical battle.",b:"Incorrect - the Samaveda is a chant collection, not a historical record.",c:"Correct - the Rigveda describes the Battle of the Ten Kings between King Sudas and a confederation of tribes.",d:"Incorrect - the Atharvaveda focuses on spells, not this event."}},
+{q:"The main (chief) social unit of the Aryans was _____.",tag:"SSC CGL 26/07/2023, 1st Shift",options:{a:"Rajan",b:"Parishad",c:"Gana",d:"Jana"},correct:"d",exp:{a:"Incorrect - Rajan refers to the chief/king, not the social unit.",b:"Incorrect - Parishad was a small assembly of Brahmins, not the basic social unit.",c:"Incorrect - Gana was a tribal/clan-based assembly.",d:"Correct - Jana (tribe) was the chief social unit of the Aryans."}},
+{q:"Which of the four Vedas contains a collection of magic spells and charms to fend off evil spirits and diseases?",tag:"SSC CGL 26/07/2023, 2nd Shift",options:{a:"Rig Veda",b:"Sama Veda",c:"Yajur Veda",d:"Atharva Veda"},correct:"d",exp:{a:"Incorrect - Rig Veda contains hymns of praise, not spells.",b:"Incorrect - Sama Veda is about chants/melodies.",c:"Incorrect - Yajur Veda contains ritual formulas.",d:"Correct - Atharva Veda contains magic spells and charms against evil spirits and disease."}},
+{q:"The Purva Mimansa school of philosophy was founded by _____ in ancient India.",tag:"Graduate Level 28/06/2023, Shift-3",options:{a:"Vyasa",b:"Kapila",c:"Patanjali",d:"Jaimini"},correct:"d",exp:{a:"Incorrect - Vyasa is credited with the Mahabharata, Vedas compilation, and Puranas.",b:"Incorrect - Kapila founded the Sankhya school.",c:"Incorrect - Patanjali is associated with the Yoga Sutras.",d:"Correct - Jaimini founded the Purva Mimansa school."}},
+{q:"India was named 'Bharat' after the name of the Bharat clan. In which of the following Vedas is this clan first mentioned?",tag:"Matric Level 27/06/2023, Shift-1",options:{a:"Atharvaveda",b:"Yajurveda",c:"Samaveda",d:"Rigveda"},correct:"d",exp:{a:"Incorrect - Atharvaveda doesn't first mention the Bharata clan.",b:"Incorrect - Yajurveda is a later ritual text.",c:"Incorrect - Samaveda largely repeats Rigvedic verses.",d:"Correct - the Rigveda first mentions the Bharata clan, from which \"Bharat\" derives."}},
+{q:"The language of the Aryan texts was:",tag:"Higher Secondary 03/08/2022, Shift-4",options:{a:"Ardh-Magadha Prakrit",b:"Prakrit",c:"Persian",d:"Sanskrit"},correct:"d",exp:{a:"Incorrect - Ardhamagadhi Prakrit was a later Middle Indo-Aryan language.",b:"Incorrect - Prakrit dialects developed after Sanskrit, spoken by common people.",c:"Incorrect - Persian is unrelated to the Vedic Aryan texts.",d:"Correct - Sanskrit was the language of the Vedic Aryan texts."}},
+{q:"As per the Rigvedic or Early Vedic Period (1500-1000 BC), who among the following was a River Goddess?",tag:"SSC MTS 25/07/2022, Afternoon",options:{a:"Agni",b:"Sindhu",c:"Arika",d:"Usha"},correct:"b",exp:{a:"Incorrect - Agni is the fire god, not a river goddess.",b:"Correct - Sindhu (the Indus) is one of the seven rivers worshipped as a goddess.",c:"Incorrect - Arika is described as a god of beauty, not a river.",d:"Incorrect - Usha is the goddess of dawn, not a river."}},
+{q:"In the Rig Veda there is a hymn in the form of a dialogue between Sage Vishvamitra and two rivers that were worshipped as goddesses. Which are these rivers?",tag:"SSC CGL 13/04/2022, Morning",options:{a:"Alakananda and Bhagirathi",b:"Ravi and Chenab",c:"Ganga and Yamuna",d:"Beas and Sutlej"},correct:"d",exp:{a:"Incorrect - these rivers aren't the subject of the Vishvamitra hymn.",b:"Incorrect - Ravi and Chenab aren't the rivers in this particular dialogue hymn.",c:"Incorrect - Ganga and Yamuna aren't addressed in this hymn.",d:"Correct - the hymn is a dialogue between Sage Vishvamitra and the rivers Beas and Sutlej."}},
+{q:"Which of the following statements about the 'Gotra' practice in ancient India is true?",tag:"SSC CGL 18/04/2022, Morning",options:{a:"Men and women were expected to marry within the same gotra.",b:"People belonging to the same gotra were regarded as descendants of the person after whom the gotra was named.",c:"Women retained their father's gotra after marriage.",d:"Each gotra was named after a famous king."},correct:"b",exp:{a:"Incorrect - marriage within the same gotra was actually prohibited (exogamy), not expected.",b:"Correct - gotra members were regarded as descendants of a common ancestor/sage after whom the gotra was named.",c:"Incorrect - women adopted their husband's gotra after marriage, not their father's.",d:"Incorrect - gotras were named after ancient sages/seers, not kings."}},
+{q:"'Purusha Sukta' is a hymn from which Veda?",tag:"SSC CHSL 05/08/2021, Afternoon",options:{a:"Atharvaveda",b:"Yajurveda",c:"Rigveda",d:"Samaveda"},correct:"c",exp:{a:"Incorrect - Purusha Sukta is not from the Atharvaveda.",b:"Incorrect - it is not from the Yajurveda.",c:"Correct - Purusha Sukta appears in the 10th Mandala of the Rigveda, describing the origin of the four Varnas.",d:"Incorrect - it is not from the Samaveda."}},
+{q:"The Rigveda points to an organized society. What kind of marriage existed there?",tag:"Selection Post Phase 13, 02/08/2025, Shift-1",options:{a:"Only monogamy was practiced",b:"Only polygamy was practiced",c:"Both monogamy and polygamy was practiced equally",d:"Monogamy was general rule but some princes practiced polygamy"},correct:"d",exp:{a:"Incorrect - polygamy did exist among some princes, so \"only\" monogamy is too absolute.",b:"Incorrect - monogamy, not polygamy, was the general rule.",c:"Incorrect - the two weren't practiced \"equally\"; monogamy was the norm and polygamy an exception.",d:"Correct - monogamy was the general rule, while polygyny was permitted mainly for Rajanyas and princes."}},
+{q:"Which Mandal of the Rigveda is devoted to soma drink?",tag:"Selection Post Phase 13, 25/07/2025, Shift-1",options:{a:"Seventh",b:"Ninth",c:"Eleventh",d:"Thirteenth"},correct:"b",exp:{a:"Incorrect - the Seventh Mandala is associated with Sage Vashistha, not Soma.",b:"Correct - the Ninth Mandala is entirely dedicated to Soma Pavamana.",c:"Incorrect - there is no \"Eleventh\" Mandala; the Rigveda has only 10.",d:"Incorrect - there is no \"Thirteenth\" Mandala."}},
+{q:"The term \"Jana\" in the Rig Vedic period primarily referred to a:",tag:"Selection Post Phase 13, 25/07/2025, Shift-1",options:{a:"Large kingdom or empire.",b:"Tribe or a group of related families.",c:"Village unit.",d:"Professional guild."},correct:"b",exp:{a:"Incorrect - territorial kingdoms (Janapadas) developed later, not in the early Jana concept.",b:"Correct - Jana referred to a tribe or group of related families/clans.",c:"Incorrect - \"Grama\" was the term for a village.",d:"Incorrect - there's no evidence Jana referred to a professional guild."}},
+{q:"Which Veda primarily contains ritual formulas and detailed procedures for performing sacrifices?",tag:"SSC CGL Tier 1, 14 Sep 2025, Shift-3",options:{a:"Samaveda",b:"Yajurveda",c:"Atharvaveda",d:"Rigveda"},correct:"b",exp:{a:"Incorrect - Samaveda focuses on musical chants for rituals, not the formulas themselves.",b:"Correct - Yajurveda is the \"Veda of Sacrificial Formulas\", guiding the Adhvaryu priest.",c:"Incorrect - Atharvaveda deals with spells and charms.",d:"Incorrect - Rigveda contains hymns recited by the Hotri, not ritual instructions."}},
+{q:"In the context of the Rigveda, what does the term 'Rik' signify?",tag:"SSC CGL Tier 1, 21 Sep 2025, Shift-3",options:{a:"Ritual sacrifice",b:"Divine law",c:"Sacred hymn",d:"Ancient melody"},correct:"c",exp:{a:"Incorrect - \"ritual sacrifice\" corresponds to the term Yajna.",b:"Incorrect - \"divine law\" corresponds to Rta.",c:"Correct - 'Rik' refers to a sacred verse or hymn of praise.",d:"Incorrect - \"melody\" corresponds to the term Saman."}},
+{q:"The Rigveda is divided into how many Mandalas?",tag:"SSC CGL Tier 1, 22 Sep 2025, Shift-1",options:{a:"5",b:"7",c:"10",d:"12"},correct:"c",exp:{a:"Incorrect - 5 undercounts the Mandalas.",b:"Incorrect - 7 refers to the \"Family Books\" (Mandalas 2-7), not the total.",c:"Correct - the Rigveda is organised into 10 Mandalas.",d:"Incorrect - 12 overstates the number."}},
+{q:"What is the meaning of Samhita in the context of the Rigveda?",tag:"SSC CGL Tier 1, 23 Sep 2025, Shift-1",options:{a:"Commentary explaining each verse",b:"Collection of hymns in prose",c:"Systematic compilation of hymns",d:"Ritual handbook"},correct:"c",exp:{a:"Incorrect - commentary explaining verses describes the Brahmanas, not Samhita.",b:"Incorrect - Rigvedic hymns are in verse (metrical), not prose.",c:"Correct - Samhita means the systematic, \"put together\" compilation of hymns/mantras.",d:"Incorrect - a ritual handbook better describes texts like the Kalpa Sutras."}},
+{q:"Which among the following is NOT a Vedanga?",tag:"SSC CGL Tier 1, 24 Sep 2025, Shift-1",options:{a:"Kalpa",b:"Vaisheshika",c:"Vyakarana",d:"Jyotisha"},correct:"b",exp:{a:"Incorrect - Kalpa (ritual) is one of the six Vedangas.",b:"Correct - Vaisheshika is one of the six orthodox philosophical schools (Darshanas), not a Vedanga.",c:"Incorrect - Vyakarana (grammar) is a Vedanga.",d:"Incorrect - Jyotisha (astronomy) is a Vedanga."}},
+{q:"Each Mandala of the Rigveda is further subdivided into _____.",tag:"SSC CGL Tier 1, 25 Sep 2025, Shift-1",options:{a:"Suktas",b:"Kandas",c:"Puranas",d:"Samhitas"},correct:"a",exp:{a:"Correct - Mandalas are subdivided into Suktas (hymns), each made of individual verses (Riks).",b:"Incorrect - \"Kanda\" is a division used in other texts like the Ramayana, not the Rigveda's Mandalas.",c:"Incorrect - Puranas are an entirely different genre of texts.",d:"Incorrect - Samhita refers to the whole compiled text, not a subdivision of a Mandala."}},
+{q:"In the Rigveda, what term is used for a collection of hymns?",tag:"SSC CGL Tier 1, 25 Sep 2025, Shift-2",options:{a:"Gayatris",b:"Puranas",c:"Suktas",d:"Sutras"},correct:"c",exp:{a:"Incorrect - Gayatri is a specific meter/mantra, not a term for a collection.",b:"Incorrect - Puranas are a separate genre of mythological texts.",c:"Correct - \"Sukta\" is the term used for a hymn/collection of verses in the Rigveda.",d:"Incorrect - Sutras are aphoristic rules found in later literature, not Rigvedic hymns."}},
+{q:"How is the Rigveda best described in the context of ancient Indian literature?",tag:"SSC CGL Tier 1, 25 Sep 2025, Shift-3",options:{a:"Compilation of Upanishads",b:"Collection of classical music",c:"Collection of royal chronicles",d:"Collection of hymns across ages"},correct:"d",exp:{a:"Incorrect - Upanishads are a distinct, later category of philosophical texts.",b:"Incorrect - classical music is more associated with the Samaveda.",c:"Incorrect - royal chronicles describe later texts like the Puranas, not the Rigveda.",d:"Correct - the Rigveda is an anthology of hymns, prayers, and invocations composed across various ages."}},
+{q:"Rig Veda is a collection of approximately how many hymns?",tag:"SSC CHSL, 22 Nov 2025, Shift-2",options:{a:"508",b:"838",c:"1028",d:"1508"},correct:"c",exp:{a:"Incorrect - 508 is far below the actual count.",b:"Incorrect - 838 is also inaccurate.",c:"Correct - the Rigveda has exactly 1,028 hymns (including 11 Valakhilya hymns).",d:"Incorrect - 1508 overstates the count."}},
+{q:"What does 'moksha' stand for in the fourfold objective of life according to Vedic philosophy?",tag:"SSC CHSL, 12 Nov 2025, Shift-2",options:{a:"Pursuit of desires",b:"Social status",c:"Spiritual freedom",d:"Wealth"},correct:"c",exp:{a:"Incorrect - pursuit of desires corresponds to Kama.",b:"Incorrect - social status isn't one of the four Purusharthas.",c:"Correct - Moksha means spiritual freedom/liberation from the cycle of birth and death.",d:"Incorrect - wealth corresponds to Artha."}},
+{q:"Which Veda contains hymns mostly taken from the Rigveda, arranged for singing?",tag:"SSC CHSL, 18 Nov 2025, Shift-2",options:{a:"Samaveda",b:"Yajurveda",c:"Atharvaveda",d:"Dhanurveda"},correct:"a",exp:{a:"Correct - Samaveda takes verses almost entirely from the Rigveda and sets them to music for ritual singing.",b:"Incorrect - Yajurveda contains mostly prose sacrificial formulas, not sung hymns.",c:"Incorrect - Atharvaveda contains magical spells, unrelated to singing.",d:"Incorrect - Dhanurveda is an Upaveda on archery, not one of the four main Vedas."}},
+{q:"The term 'atman' in the Upanishads refers to _____.",tag:"SSC CHSL, 18 Nov 2025, Shift-3",options:{a:"Ritual fire",b:"Sacred chant",c:"Supreme god",d:"The inner self or soul"},correct:"d",exp:{a:"Incorrect - ritual fire is Agni, not Atman.",b:"Incorrect - sacred chant relates to Samaveda, not Atman.",c:"Incorrect - \"supreme god/cosmic reality\" corresponds to Brahman, not Atman.",d:"Correct - Atman refers to the individual self or soul, whose identity with Brahman is a central Upanishadic teaching."}},
+{q:"In which Indian text does the name 'Bharata' first appear?",tag:"SSC CHSL, 19 Nov 2025, Shift-2",options:{a:"Ramayan",b:"Rig Veda",c:"Meghdutam",d:"Mahabharata"},correct:"b",exp:{a:"Incorrect - the Ramayana does not first mention the Bharata tribe.",b:"Correct - the Rigveda first mentions the Bharata tribe, central to the Battle of the Ten Kings.",c:"Incorrect - Meghdutam is a much later classical poem, unrelated.",d:"Incorrect - the Mahabharata narrates the story of Bharata's descendants but is composed later than the Rigveda."}},
+{q:"The philosophical concept that everything in the universe is one divine essence is called _____.",tag:"SSC CHSL, 21 Nov 2025, Shift-2",options:{a:"Samiti",b:"Yajna",c:"Purandar",d:"Brahman"},correct:"d",exp:{a:"Incorrect - Samiti was a tribal assembly.",b:"Incorrect - Yajna means ritual sacrifice.",c:"Incorrect - Purandar (\"breaker of forts\") is an epithet of Indra.",d:"Correct - Brahman is the ultimate, all-pervading divine essence of the universe in Vedic philosophy."}},
+{q:"Who are traditionally believed to have composed the Vedic hymns in early Indian tradition?",tag:"SSC CHSL, 21 Nov 2025, Shift-3",options:{a:"Kings",b:"Scholars from Nalanda",c:"Village elders",d:"Rishis and Rishikas"},correct:"d",exp:{a:"Incorrect - kings are historical figures in hymns (like Sudas), not the composers.",b:"Incorrect - Nalanda was a much later Buddhist-era institution.",c:"Incorrect - village elders are not credited with composing the hymns.",d:"Correct - the hymns are traditionally ascribed to Rishis (seers) and Rishikas (female seers) who \"heard\" them."}},
+{q:"Which of the following varnas in Vedic society was considered responsible for trade and business?",tag:"SSC CHSL, 22 Nov 2025, Shift-3",options:{a:"Vaishya",b:"Brahmin",c:"Shudra",d:"Kshatriya"},correct:"a",exp:{a:"Correct - Vaishyas handled agriculture, cattle-rearing, trade, and commerce.",b:"Incorrect - Brahmins performed priestly duties and learning.",c:"Incorrect - Shudras were engaged in service to the other classes.",d:"Incorrect - Kshatriyas managed warfare and administration."}},
+{q:"Which two languages flourished alongside Sanskrit in Vedic ancient India?",tag:"SSC CHSL, 27 Nov 2025, Shift-1",options:{a:"Hindi and Urdu",b:"Pali and Prakrit",c:"Bengali and Tamil",d:"English and Persian"},correct:"b",exp:{a:"Incorrect - Hindi and Urdu are much later languages.",b:"Correct - Pali and Prakrit were the Middle Indo-Aryan vernacular dialects that flourished alongside Sanskrit.",c:"Incorrect - Bengali is much later, and Tamil developed independently in the south.",d:"Incorrect - English and Persian are unrelated to the ancient Vedic-era linguistic landscape."}},
+{q:"The collections of Vedic hymns are known as _____.",tag:"SSC CHSL, 12 Nov 2025, Shift-3",options:{a:"Ganas",b:"Vedas",c:"Puranas",d:"Samhitas"},correct:"d",exp:{a:"Incorrect - Ganas refers to tribal assemblies or troops.",b:"Incorrect - \"Vedas\" is the broader term for the whole corpus (Samhita+Brahmana+Aranyaka+Upanishad).",c:"Incorrect - Puranas are a separate, later genre of mythological texts.",d:"Correct - Samhitas are the systematic collections of Vedic hymns/mantras."}},
+{q:"Which Vedic text category explains mantras and sacrificial rituals in prose form?",tag:"SSC CHSL, 29 Nov 2025, Shift-3",options:{a:"Samhitas",b:"Aranyakas",c:"Brahmanas",d:"Upanishads"},correct:"c",exp:{a:"Incorrect - Samhitas contain the hymns themselves, not prose explanations.",b:"Incorrect - Aranyakas are \"forest texts\" focused on meditation.",c:"Correct - Brahmanas are prose commentaries explaining rituals and mantras.",d:"Incorrect - Upanishads focus on philosophy (Vedanta), not ritual procedure."}},
+{q:"The summaries of conferences held in ancient India were called _____.",tag:"SSC CHSL, 12 Nov 2025, Shift-3",options:{a:"Ganas",b:"Vedas",c:"Puranas",d:"Samhitas"},correct:"d",exp:{a:"Incorrect - Ganas were tribal assemblies/troops, not textual summaries.",b:"Incorrect - Vedas is the umbrella term for the whole scripture corpus.",c:"Incorrect - Puranas are a distinct, later genre of mythological narratives.",d:"Correct - as per the source material, 'Samhita' is the intended answer here, denoting the systematic compilation layer of Vedic texts."}},
+{q:"The Vedic concept of 'kama' primarily relates to _____.",tag:"SSC MTS, 11 Feb 2026, Shift-2",options:{a:"Selfless service",b:"Detachment from worldly life",c:"Accumulation of wealth",d:"Desire and enjoyment"},correct:"d",exp:{a:"Incorrect - selfless service isn't one of the four Purusharthas.",b:"Incorrect - detachment corresponds to Moksha, not Kama.",c:"Incorrect - accumulation of wealth corresponds to Artha.",d:"Correct - Kama represents desire, pleasure, and the aesthetic enjoyment of life."}},
+{q:"In what language were the Vedic hymns composed?",tag:"SSC MTS, 13 Feb 2026, Shift-2",options:{a:"Pali",b:"Prakrit",c:"Tamil",d:"Sanskrit"},correct:"d",exp:{a:"Incorrect - Pali developed later, popularised by Buddhism.",b:"Incorrect - Prakrit also developed later as a vernacular.",c:"Incorrect - Tamil is a distinct Dravidian language unrelated to Vedic Sanskrit.",d:"Correct - the Vedic hymns were composed in early Vedic Sanskrit."}},
+{q:"Which Veda contains magical spells and charms?",tag:"SSC MTS, 16 Feb 2026, Shift-2",options:{a:"Rigveda",b:"Samaveda",c:"Yajurveda",d:"Atharvaveda"},correct:"d",exp:{a:"Incorrect - Rigveda focuses on hymns of praise.",b:"Incorrect - Samaveda focuses on musical chants.",c:"Incorrect - Yajurveda dictates sacrificial formulas.",d:"Correct - Atharvaveda contains magical spells and charms."}},
+{q:"Which Vedic text has been included by UNESCO in the list of World Human Heritage Literature?",tag:"SSC MTS, 18 Feb 2026, Shift-1",options:{a:"Atharvaveda",b:"Yajurveda",c:"Samaveda",d:"Rigveda"},correct:"d",exp:{a:"Incorrect - Atharvaveda isn't the text credited with this recognition here.",b:"Incorrect - Yajurveda isn't the text credited with this recognition.",c:"Incorrect - Samaveda isn't the text credited with this recognition.",d:"Correct - the Rigveda, the oldest and most significant Veda, has been included in UNESCO's Memory of the World Register."}},
+{q:"Which of the following pair is correct?\n1. Vedic literature - Shruti tradition\n2. Ramayana - Smriti tradition\nWhich of the statements above is/are correct?",tag:"SSC MTS, 18 Feb 2026, Shift-1",options:{a:"Only I",b:"Only II",c:"Both I and II",d:"Neither I nor II"},correct:"c",exp:{a:"Incorrect - statement II is also correct, so it isn't \"only I\".",b:"Incorrect - statement I is also correct, so it isn't \"only II\".",c:"Correct - Vedic literature belongs to the Shruti (revealed) tradition, and the Ramayana belongs to the Smriti (remembered) tradition.",d:"Incorrect - both statements are actually true."}},
+{q:"In which Veda is river Sarasvati mentioned for the first time?",tag:"SSC MTS, 18 Feb 2026, Shift-3",options:{a:"Sam Veda",b:"Rig Veda",c:"Atharva Veda",d:"Yajur Veda"},correct:"b",exp:{a:"Incorrect - Sama Veda came later and mainly repeats Rigvedic content.",b:"Correct - the Rig Veda, in hymns like the Nadistuti Sukta, first and most extensively mentions the Sarasvati.",c:"Incorrect - Atharva Veda is not where Sarasvati is first mentioned.",d:"Incorrect - Yajur Veda is a later ritual text."}},
+{q:"Which of the following professions has been mentioned in the Vedic texts?\n1. Carpenter\n2. Healer",tag:"SSC MTS, 20 Feb 2026, Shift-2",options:{a:"Only I",b:"Only II",c:"Neither I nor II",d:"Both I and II"},correct:"d",exp:{a:"Incorrect - the Healer (Bhishaj) is also mentioned, so it isn't \"only I\".",b:"Incorrect - the Carpenter (Takshan) is also mentioned, so it isn't \"only II\".",c:"Incorrect - both professions are in fact mentioned.",d:"Correct - both the Carpenter (Takshan) and Healer (Bhishaj) are documented professions in Vedic texts."}},
+{q:"The famous philosophical discussions between Nachiketa and Yama are found in which Upanishad?",tag:"DP HCM 2025, 07 Jan 2026, Shift-2",options:{a:"Kena Upanishad",b:"Katha Upanishad",c:"Mundaka Upanishad",d:"Chandogya Upanishad"},correct:"b",exp:{a:"Incorrect - Kena Upanishad focuses on the nature of Brahman.",b:"Correct - the Katha Upanishad records the dialogue between Nachiketa and Yama on the nature of the soul and afterlife.",c:"Incorrect - Mundaka Upanishad is known for the motto \"Satyameva Jayate\".",d:"Incorrect - Chandogya Upanishad deals with Sama Veda chanting and \"Tat Tvam Asi\"."}},
+{q:"Which among the following statements is TRUE about the Rig Vedic Society?",tag:"SSC CPO, 12 Dec 2025, Shift-2",options:{a:"The Rig Vedic society was matrilineal.",b:"The head of the family was known as Vishaypati.",c:"Apala, Visvavara, Ghosa, and Lopamudra were prominent women poets of the Rig Vedic period.",d:"Child marriage and the practice of Sati were prevalent."},correct:"c",exp:{a:"Incorrect - Rig Vedic society was patriarchal, not matrilineal.",b:"Incorrect - there is no established term \"Vishaypati\" for the head of family in this context.",c:"Correct - Apala, Visvavara, Ghosa, and Lopamudra were notable women poets/seers of the Rig Vedic period.",d:"Incorrect - child marriage and Sati were not prevalent in the early Rig Vedic period."}},
+{q:"Which Veda is known as the 'Book of Chants' and is the origin of Indian music?",tag:"Delhi Police Constable, 30 Dec 2025, Shift-2",options:{a:"Rigveda",b:"Yajurveda",c:"Atharvaveda",d:"Samaveda"},correct:"d",exp:{a:"Incorrect - Rigveda contains hymns of praise, not musical notation.",b:"Incorrect - Yajurveda contains sacrificial formulas.",c:"Incorrect - Atharvaveda contains spells, unrelated to music.",d:"Correct - Samaveda, sung by Udgatri priests, laid the foundation of Indian classical music."}},
+{q:"What was the main occupation of the people of the 'Early Vedic' (Rigvedic) period?",tag:"Delhi Police Constable, 30 Dec 2025, Shift-3",options:{a:"Agriculture",b:"Trade",c:"Fishing",d:"Pastoralism (Cattle-herding)"},correct:"d",exp:{a:"Incorrect - agriculture was practiced but only became dominant in the Later Vedic period.",b:"Incorrect - complex trade developed later, not as the primary Early Vedic occupation.",c:"Incorrect - fishing was not the main occupation.",d:"Correct - pastoralism, especially cattle-rearing, was the primary occupation of the semi-nomadic Early Vedic Aryans."}},
+{q:"The phrase 'Satyameva Jayate' (Truth Alone Triumphs) is taken from which ancient text?",tag:"Delhi Police Constable, 02 Jan 2026, Shift-1",options:{a:"Rigveda",b:"Bhagavad Gita",c:"Ramayana",d:"Mundaka Upanishad"},correct:"d",exp:{a:"Incorrect - the Rigveda is the oldest Veda but doesn't contain this specific motto.",b:"Incorrect - the Bhagavad Gita is a philosophical dialogue in the Mahabharata, not the source of this phrase.",c:"Incorrect - the Ramayana narrates Rama's story and doesn't contain this motto.",d:"Correct - 'Satyameva Jayate' comes from the Mundaka Upanishad and was adopted as India's national motto."}},
+{q:"Among the ancient literary works, which is the oldest one that is dedicated to various deities?",tag:"Delhi Police Constable, 04 Jan 2026, Shift-2",options:{a:"Mahabharata",b:"Ramayana",c:"Rigveda",d:"Arthashastra"},correct:"c",exp:{a:"Incorrect - the Mahabharata is a later classical epic (Itihasa).",b:"Incorrect - the Ramayana is also a later epic.",c:"Correct - the Rigveda is the oldest known Vedic Sanskrit text, dedicated to various deities like Agni, Indra, and Soma.",d:"Incorrect - the Arthashastra is a much later political treatise by Chanakya."}},
+{q:"Consider the following statements:\n1. During the Vedic period the society was organised into four varnas.\n2. Early Hindu philosophy prescribed the four stages of life.\nWhich of the following statement is correct?",tag:"SSC CHSL, 21 Nov 2025, Shift-3",options:{a:"Only I",b:"Only II",c:"Both I and II",d:"Neither I nor II"},correct:"c",exp:{a:"Incorrect - statement II (four ashramas) is also correct, so it isn't \"only I\".",b:"Incorrect - statement I (four varnas) is also correct, so it isn't \"only II\".",c:"Correct - both the four-varna system and the four-stage Ashrama system are documented features of Vedic society.",d:"Incorrect - both statements are in fact true."}}
+];
+
+/* Assign sequential ids and split into sets of ~15 */
+QUESTIONS.forEach((q,i)=>q.id=i);
+const SETS = [
+  {name:"Set 1", range:[0,15]},
+  {name:"Set 2", range:[15,30]},
+  {name:"Set 3", range:[30,45]},
+  {name:"Set 4", range:[45,58]}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let studentName = "";
+let currentSetIndex = null;
+let currentQuestions = [];
+let currentIdx = 0;
+let answers = {}; // id -> {selected: 'a'/null, status: 'not-visited'|'not-answered'|'answered'|'marked'|'answered-marked'}
+
+const ADMIN_PASSWORD = "Kittu@1104";
+
+/* =========================================================
+   SCREEN NAVIGATION
+   ========================================================= */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function checkNameInput(){
+  const val = document.getElementById('studentName').value.trim();
+  document.getElementById('startBtn').disabled = val.length === 0;
+}
+
+function goToSetSelection(){
+  const nameInput = document.getElementById('studentName').value.trim();
+  if(nameInput) studentName = nameInput;
+  document.getElementById('welcomeName').textContent = studentName;
+  renderSetGrid();
+  showScreen('screen-sets');
+}
+
+function renderSetGrid(){
+  const grid = document.getElementById('setGrid');
+  grid.innerHTML = '';
+  SETS.forEach((s,idx)=>{
+    const count = s.range[1]-s.range[0];
+    const div = document.createElement('div');
+    div.className = 'set-card';
+    div.onclick = ()=>startSet(idx);
+    div.innerHTML = `
+      <div class="set-num">Question Set ${idx+1}</div>
+      <div class="set-title">${s.name} (${count} Questions)</div>
+      <div class="set-meta">Vedic Age &middot; Mixed SSC exam questions</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function startSet(idx){
+  currentSetIndex = idx;
+  const [start,end] = SETS[idx].range;
+  currentQuestions = QUESTIONS.slice(start,end);
+  currentIdx = 0;
+  answers = {};
+  currentQuestions.forEach(q=>{
+    answers[q.id] = {selected:null, status:'not-visited'};
+  });
+  answers[currentQuestions[0].id].status = 'not-answered';
+  renderPalette();
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+/* =========================================================
+   QUIZ RENDERING
+   ========================================================= */
+function renderQuestion(){
+  const q = currentQuestions[currentIdx];
+  document.getElementById('qCounter').textContent = `Question ${currentIdx+1} of ${currentQuestions.length}`;
+  document.getElementById('qTag').textContent = `[${q.tag}]`;
+  document.getElementById('qText').textContent = q.q;
+
+  const optsDiv = document.getElementById('qOptions');
+  optsDiv.innerHTML = '';
+  const state = answers[q.id];
+  ['a','b','c','d'].forEach(letter=>{
+    const opt = document.createElement('div');
+    opt.className = 'option' + (state.selected===letter ? ' selected' : '');
+    opt.onclick = ()=>selectOption(letter);
+    opt.innerHTML = `<span class="opt-letter">${letter.toUpperCase()}</span><span class="opt-text">${q.options[letter]}</span>`;
+    optsDiv.appendChild(opt);
+  });
+
+  if(state.status === 'not-visited'){
+    state.status = 'not-answered';
+  }
+  renderPalette();
+}
+
+function selectOption(letter){
+  const q = currentQuestions[currentIdx];
+  const state = answers[q.id];
+  state.selected = letter;
+  if(state.status === 'marked' || state.status === 'answered-marked'){
+    state.status = 'answered-marked';
+  } else {
+    state.status = 'answered';
+  }
+  renderQuestion();
+}
+
+function clearResponse(){
+  const q = currentQuestions[currentIdx];
+  const state = answers[q.id];
+  state.selected = null;
+  state.status = (state.status==='answered-marked'||state.status==='marked') ? 'marked' : 'not-answered';
+  renderQuestion();
+}
+
+function markForReview(){
+  const q = currentQuestions[currentIdx];
+  const state = answers[q.id];
+  state.status = state.selected ? 'answered-marked' : 'marked';
+  goToNextOrStay();
+}
+
+function saveAndNext(){
+  goToNextOrStay();
+}
+
+function goToNextOrStay(){
+  if(currentIdx < currentQuestions.length - 1){
+    currentIdx++;
+    renderQuestion();
+  } else {
+    renderPalette();
+  }
+}
+
+function prevQuestion(){
+  if(currentIdx > 0){
+    currentIdx--;
+    renderQuestion();
+  }
+}
+
+function jumpToQuestion(i){
+  currentIdx = i;
+  renderQuestion();
+}
+
+function renderPalette(){
+  const grid = document.getElementById('paletteGrid');
+  grid.innerHTML = '';
+  currentQuestions.forEach((q,i)=>{
+    const st = answers[q.id].status;
+    const btn = document.createElement('button');
+    btn.className = 'p-btn ' + st + (i===currentIdx ? ' current' : '');
+    btn.textContent = i+1;
+    btn.onclick = ()=>jumpToQuestion(i);
+    grid.appendChild(btn);
+  });
+}
+
+function confirmSubmit(){
+  const unanswered = currentQuestions.filter(q=>!answers[q.id].selected).length;
+  const msg = unanswered > 0
+    ? `You have ${unanswered} unanswered question(s). Submit anyway?`
+    : `Submit the quiz now?`;
+  if(confirm(msg)){
+    submitQuiz();
+  }
+}
+
+function submitQuiz(){
+  let score = 0;
+  currentQuestions.forEach(q=>{
+    if(answers[q.id].selected === q.correct) score++;
+  });
+  const total = currentQuestions.length;
+
+  // Save attempt record
+  const record = {
+    name: studentName,
+    set: SETS[currentSetIndex].name,
+    score: score,
+    total: total,
+    date: new Date().toLocaleString()
+  };
+  const attempts = JSON.parse(localStorage.getItem('quizAttempts') || '[]');
+  attempts.push(record);
+  localStorage.setItem('quizAttempts', JSON.stringify(attempts));
+
+  renderReview(score,total);
+  showScreen('screen-review');
+}
+
+/* =========================================================
+   REVIEW SCREEN
+   ========================================================= */
+function renderReview(score,total){
+  document.getElementById('reviewStudentLine').textContent = `${studentName} &middot; ${SETS[currentSetIndex].name}`.replace('&middot;','\u00B7');
+  document.getElementById('scoreBig').textContent = `${score} / ${total}`;
+
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  currentQuestions.forEach((q,i)=>{
+    const state = answers[q.id];
+    const userSel = state.selected;
+    const isCorrect = userSel === q.correct;
+    const statusLabel = !userSel ? 'skipped' : (isCorrect ? 'correct' : 'incorrect');
+    const statusText = !userSel ? 'Skipped' : (isCorrect ? 'Correct' : 'Incorrect');
+
+    const item = document.createElement('div');
+    item.className = 'review-item';
+
+    let optsHtml = '';
+    ['a','b','c','d'].forEach(letter=>{
+      let cls = 'review-opt';
+      if(letter === q.correct) cls += ' is-correct';
+      else if(letter === userSel) cls += ' is-user-wrong';
+      let tagBits = [];
+      if(letter === q.correct) tagBits.push('Correct Answer');
+      if(letter === userSel && letter !== q.correct) tagBits.push('Your Answer');
+      if(letter === userSel && letter === q.correct) tagBits = ['Your Answer &middot; Correct'.replace('&middot;','\u00B7')];
+      optsHtml += `
+        <div class="${cls}">
+          <div class="ro-top">${letter.toUpperCase()}. ${q.options[letter]} ${tagBits.length ? '<span class="mono" style="font-size:11px;color:#7A2E2E;">&nbsp;['+tagBits.join(' / ')+']</span>' : ''}</div>
+          <div class="ro-explain">${q.exp[letter]}</div>
+        </div>`;
+    });
+
+    item.innerHTML = `
+      <div class="q-header">
+        <div><strong>Q${i+1}.</strong> ${q.q.replace(/\n/g,'<br>')}</div>
+        <span class="r-status ${statusLabel}">${statusText}</span>
+      </div>
+      <div class="tagline mono">[${q.tag}]</div>
+      <div style="margin-top:14px;">${optsHtml}</div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+function openAdminLogin(){
+  document.getElementById('adminPassInput').value = '';
+  document.getElementById('adminErrMsg').style.display = 'none';
+  document.getElementById('adminLoginModal').style.display = 'flex';
+}
+function closeAdminLogin(){
+  document.getElementById('adminLoginModal').style.display = 'none';
+}
+function checkAdminPassword(){
+  const val = document.getElementById('adminPassInput').value;
+  if(val === ADMIN_PASSWORD){
+    closeAdminLogin();
+    renderAdminTable();
+    showScreen('screen-admin');
+  } else {
+    document.getElementById('adminErrMsg').style.display = 'block';
+  }
+}
+function renderAdminTable(){
+  const attempts = JSON.parse(localStorage.getItem('quizAttempts') || '[]');
+  const wrap = document.getElementById('adminTableWrap');
+  if(attempts.length === 0){
+    wrap.innerHTML = '<div class="empty-note">No quiz attempts recorded yet.</div>';
+    return;
+  }
+  let rows = attempts.slice().reverse().map(a=>{
+    const pct = ((a.score/a.total)*100).toFixed(1);
+    return `<tr><td>${a.name}</td><td>${a.set}</td><td>${a.score} / ${a.total}</td><td>${pct}%</td><td>${a.date}</td></tr>`;
+  }).join('');
+  wrap.innerHTML = `
+    <table class="admin-table">
+      <thead><tr><th>Student Name</th><th>Set Attempted</th><th>Score</th><th>Percentage</th><th>Date &amp; Time</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+function clearAllAttempts(){
+  if(confirm('This will permanently delete all recorded student attempts. Continue?')){
+    localStorage.removeItem('quizAttempts');
+    renderAdminTable();
+  }
+}
+function exitAdmin(){
+  showScreen(studentName ? 'screen-sets' : 'screen-register');
+}
+</script>
+</body>
+</html>
